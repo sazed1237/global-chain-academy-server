@@ -22,6 +22,10 @@ app.use(cors({
 
 app.use(express.json())
 
+app.options('*', cors({
+    origin: allowedOrigins,
+    credentials: true
+}));
 
 
 const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.emnfg.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0`;
@@ -44,6 +48,9 @@ async function run() {
         const userCollection = client.db("globalChainAcademy").collection('users')
 
 
+        app.options('*', (req, res) => {
+            res.sendStatus(200);
+        });
 
         app.post('/jwt', async (req, res) => {
             const user = req.body;
