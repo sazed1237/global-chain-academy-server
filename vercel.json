@@ -24,10 +24,6 @@
                 "Access-Control-Allow-Credentials": "true"
             }
         }
-    ],
-    "functions": {
-        "index.js": {
-            "maxDuration": 25
-        }
-    }
+    ]
+   
 }
