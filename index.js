@@ -29,6 +29,7 @@ app.options('*', cors({
 }));
 
 
+
 // MongoDB URI and client
 const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.emnfg.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0`;
 
@@ -51,6 +52,7 @@ clientPromise = global._mongoClientPromise;
 
 async function run() {
     try {
+        
         // Connect the client to the server	(optional starting in v4.7)
         // await clientPromise; 
 
@@ -313,10 +315,10 @@ async function run() {
 
 
         // Send a ping to confirm a successful connection
-        await client.db("admin").command({ ping: 1 });
-        console.log("Pinged your deployment. You successfully connected to MongoDB!");
+        // await client.db("admin").command({ ping: 1 });
+        // console.log("Pinged your deployment. You successfully connected to MongoDB!");
     } catch {
-        console.error("Error in run function:", error);
+        console.error("Error in run function: ", error);
     }
 }
 run().catch(console.dir);
@@ -332,7 +334,6 @@ app.get('/', (req, res) => {
 app.listen(port, () => {
     console.log(`server is running on ${port}`)
 })
-
 
 
 // Export the app wrapped with serverless
