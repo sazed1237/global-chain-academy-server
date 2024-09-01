@@ -3,7 +3,7 @@ const cors = require('cors');
 require('dotenv').config();
 const jwt = require('jsonwebtoken');
 const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
-const serverless = require('serverless-http');
+
 const app = express()
 const port = process.env.PORT || 5000
 
@@ -328,6 +328,3 @@ app.listen(port, () => {
     console.log(`server is running on ${port}`)
 })
 
-
-// Export the app wrapped with serverless
-module.exports.handler = serverless(app);
