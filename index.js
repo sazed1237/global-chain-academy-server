@@ -3,7 +3,6 @@ const cors = require('cors');
 require('dotenv').config();
 const jwt = require('jsonwebtoken');
 const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
-const serverless = require('serverless-http');
 const app = express()
 const port = process.env.PORT || 5000
 
@@ -52,7 +51,7 @@ clientPromise = global._mongoClientPromise;
 async function run() {
     try {
         // Connect the client to the server	(optional starting in v4.7)
-        await clientPromise; 
+        // await clientPromise; 
 
         const enrollCollection = client.db("globalChainAcademy").collection('enrollments')
         const userCollection = client.db("globalChainAcademy").collection('users')
@@ -333,7 +332,3 @@ app.listen(port, () => {
     console.log(`server is running on ${port}`)
 })
 
-
-
-// // Export the app wrapped with serverless
-// module.exports.handler = serverless(app);
