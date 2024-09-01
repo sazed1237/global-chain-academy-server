@@ -3,7 +3,7 @@ const cors = require('cors');
 require('dotenv').config();
 const jwt = require('jsonwebtoken');
 const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
-
+const serverless = require('serverless-http');
 const app = express()
 const port = process.env.PORT || 5000
 
@@ -29,25 +29,30 @@ app.options('*', cors({
 }));
 
 
-
 // MongoDB URI and client
 const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.emnfg.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0`;
 
+// Use a global variable to store the client
+let client;
+let clientPromise;
 
-const client = new MongoClient(uri, {
-    serverApi: {
-        version: ServerApiVersion.v1,
-        strict: true,
-        deprecationErrors: true,
-    }
-});
+if (!global._mongoClientPromise) {
+    client = new MongoClient(uri, {
+        serverApi: {
+            version: ServerApiVersion.v1,
+            strict: true,
+            deprecationErrors: true,
+        }
+    });
+    global._mongoClientPromise = client.connect();
+}
+clientPromise = global._mongoClientPromise;
 
 
 async function run() {
     try {
-
         // Connect the client to the server	(optional starting in v4.7)
-        // await client.connect();
+        await clientPromise; 
 
         const enrollCollection = client.db("globalChainAcademy").collection('enrollments')
         const userCollection = client.db("globalChainAcademy").collection('users')
@@ -311,7 +316,7 @@ async function run() {
         // await client.db("admin").command({ ping: 1 });
         // console.log("Pinged your deployment. You successfully connected to MongoDB!");
     } catch {
-        console.error("Error in run function: ", error);
+        console.error("Error in run function:", error);
     }
 }
 run().catch(console.dir);
@@ -328,3 +333,7 @@ app.listen(port, () => {
     console.log(`server is running on ${port}`)
 })
 
+
+
+// // Export the app wrapped with serverless
+// module.exports.handler = serverless(app);
